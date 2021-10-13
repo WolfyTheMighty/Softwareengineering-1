@@ -1,11 +1,11 @@
-#root {
-    ‐fx‐background‐color: #00CC99;
-    ‐fx‐padding: 6;
-    ‐fx‐spacing: 10;
-    ‐fx‐border‐color: #CC0069FF;
-    ‐fx‐border‐radius: 6;
+.root{
+    -fx-background-color: #00CC99;
+    -fx-padding: 6;
+    -fx-spacing: 10;
+    -fx-border-color: #CC0069FF;
+    -fx-border-radius: 6;
 }
 
 .button {
-    ‐fx‐pref‐width: 90;
+    -fx-pref-width: 90;
 }
