@@ -65,7 +65,7 @@ public class Customer {
      * @return chainable self-reference
      */
     public Customer setId(long id) {
-        if (id > 0) {
+        if (this.id < 0) {
             this.id = id;
         }
         return this;
@@ -191,23 +191,24 @@ public class Customer {
     private void splitName(String name) {
         if (name == null) return;
 //        this.firstName = name.split(" |; |, ")[0];
-//        if (!(name.contains(", ") || name.contains("; "))) {
-//            name = new StringBuilder(name).reverse().toString();
-//            String temp = "";
-//            for (String s : name.split(" ")) {
-//                temp = temp + " " + new StringBuilder(s).reverse().toString();
-//            }
-//            name = temp;
-//        }
+        if ((name.contains(", ") || name.contains("; "))) {
+//            System.out.println("here");
+            name = new StringBuilder(name).reverse().toString();
+            String temp = "";
+            for (String s : name.split(" ")) {
+                temp = temp + " " + new StringBuilder(s).reverse().toString();
+            }
+            name = temp;
+        }
         String split = "";
         Pattern pattern = Pattern.compile(" |; |, ");
         Matcher matcher = pattern.matcher(name);
         if (matcher.find()) {
             split = matcher.group();
         }
-        this.lastName = name.substring(name.lastIndexOf(split)).replace(split, "").trim();
+        this.lastName = name.substring(name.lastIndexOf(split)).replace(",", "").trim();
         name = name.replace(lastName, "");
-        this.firstName = name.trim();
+        this.firstName = name.replace(",","").trim();
 //        new StringBuilder(name).reverse().toString().split(" |; |, ")[0];
     }
 
