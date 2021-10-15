@@ -7,7 +7,7 @@ import java.util.function.Supplier;
  * Class derived from Application_B3 to test the Customer implementation.
  * Customer objects are derived from super class.
  * 
- * @author sgra64
+ * @author Arpad Horvath
  *
  */
 

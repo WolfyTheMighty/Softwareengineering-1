@@ -7,7 +7,7 @@ import datamodel.Customer;
 /**
  * Class with Customer objects and main() function.
  * 
- * @author sgra64
+ * @author Arpad Horvath
  *
  */
 
