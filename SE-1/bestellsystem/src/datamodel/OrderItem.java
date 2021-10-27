@@ -1,21 +1,15 @@
+package datamodel;
 
 import java.util.*;
 
 /**
  * Class that describes an ordered item as part of an Order. Orders may have multiple order items.
- * 
- * @since 1.0
+ *
+ * @author Arpad Horvath
  * @version {@value package_info#Version}
- * @author sgra64
+ * @since 1.0
  */
 public class OrderItem {
-
-    /**
-     * Default constructor
-     */
-    public OrderItem() {
-    }
-
     /**
      * ordered article, immutable, final
      */
@@ -26,42 +20,56 @@ public class OrderItem {
      */
     private int unitsOrdered;
 
-
+    /**
+     * Default constructor
+     */
+    public OrderItem() {
+        article = null;
+    }
 
 
     /**
      * Constructor with article and units arguments.
-     * @param article ordered article, throws IllegalArgumentException if article is null
+     *
+     * @param article      ordered article, throws IllegalArgumentException if article is null
      * @param unitsOrdered number of articles ordered
      */
-    public void OrderItem(Article article, int unitsOrdered) {
-        // TODO implement here
+    public OrderItem(Article article, int unitsOrdered) {
+        this.article = article;
+        this.unitsOrdered = unitsOrdered;
     }
 
     /**
      * article getter. Attribute article cannot be changed has therefore has no setter (immutable attribute).
+     *
      * @return reference to the ordered article
      */
     public Article getArticle() {
-        // TODO implement here
-        return null;
+        return article;
     }
 
     /**
      * unitsOrdered getter.
+     *
      * @return number of article ordered
      */
     public int getUnitsOrdered() {
-        // TODO implement here
-        return 0;
+
+        return unitsOrdered;
     }
 
     /**
      * unitsOrdered setter with constraint: {@code units >= 0}, otherwise the method has no effect.
+     *
      * @param units updated number of articles ordered
      */
     public void setUnitsOrdered(int units) {
-        // TODO implement here
+        if (units >= 0) this.unitsOrdered = units;
     }
 
+    @Override
+    public String toString() {
+        return unitsOrdered + " " +getArticle().getDescription() + " (" + getArticle().getId() +")"
+                ;
+    }
 }

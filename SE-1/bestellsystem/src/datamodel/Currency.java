@@ -1,3 +1,4 @@
+package datamodel;
 
 /**
  * Type to enumerate currencies.
@@ -6,7 +7,7 @@
  * 
  * @since 1.0
  * @version {@value package_info#Version}
- * @author sgra64
+ * @author Arpad Horvath
  */
 public enum Currency {
     EUR,

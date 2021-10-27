@@ -1,3 +1,4 @@
+package datamodel;
 
 /**
  * Type to enumerate tax rates applicable for articles.
@@ -11,7 +12,7 @@
  * 
  * @since 1.0
  * @version {@value package_info#Version}
- * @author sgra64
+ * @author Arpad Horvath
  */
 public enum TAX {
     TAXFREE,

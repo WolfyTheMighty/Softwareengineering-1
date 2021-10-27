@@ -1,12 +1,14 @@
+package datamodel;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 /**
  * Class for entity type Order. Order represents a contractual relation between a Customer and a selling business for purchasing (ordered) items.
  * 
  * @since 1.0
  * @version {@value package_info#Version}
- * @author sgra64
+ * @author Arpad Horvath
  */
 public class Order {
 
@@ -14,6 +16,9 @@ public class Order {
      * Default constructor
      */
     public Order() {
+        customer = null;
+        creationDate = null;
+        items = null;
     }
 
     /**
@@ -50,8 +55,15 @@ public class Order {
      * Constructor with customer owning the order as argument.
      * @param customer owner of order, customer who placed that order, throws IllegalArgumentException if customer is null
      */
-    public void Order(Customer customer) {
-        // TODO implement here
+    public Order(Customer customer) {
+        if (customer == null){
+            throw new IllegalArgumentException();
+        }
+        else{
+            this.customer = customer;
+        }
+        items = new ArrayList<>();
+        creationDate = Calendar.getInstance().getTime();
     }
 
     /**
@@ -59,8 +71,8 @@ public class Order {
      * @return order id, may be invalid (null) if id is still unassigned
      */
     public String getId() {
-        // TODO implement here
-        return "";
+
+        return id;
     }
 
     /**
@@ -69,8 +81,10 @@ public class Order {
      * @return chainable self-reference
      */
     public Order setId(String id) {
-        // TODO implement here
-        return null;
+        if (this.id == null && id != null){
+            if (!id.isEmpty())this.id = id;
+        }
+        return this;
     }
 
     /**
@@ -78,8 +92,8 @@ public class Order {
      * @return customer who owns the order, cannot be null
      */
     public Customer getCustomer() {
-        // TODO implement here
-        return null;
+
+        return customer;
     }
 
     /**
@@ -87,8 +101,8 @@ public class Order {
      * @return time/date when order was created
      */
     public Date getCreationDate() {
-        // TODO implement here
-        return null;
+
+        return creationDate;
     }
 
     /**
@@ -97,8 +111,8 @@ public class Order {
      * @return chainable self-reference
      */
     public Order setCreationDate(long dateAsLong) {
-        // TODO implement here
-        return null;
+        //TODO
+        return this;
     }
 
     /**
@@ -106,8 +120,7 @@ public class Order {
      * @return number of ordered items
      */
     public int itemsCount() {
-        // TODO implement here
-        return 0;
+        return items.size();
     }
 
     /**
@@ -115,8 +128,7 @@ public class Order {
      * @return ordered items as {@code Iterable<OrderItem>}
      */
     public Iterable<OrderItem> getItems() {
-        // TODO implement here
-        return null;
+        return (Iterable<OrderItem>)items;
     }
 
     /**
@@ -124,8 +136,7 @@ public class Order {
      * @return ordered items as {@code OrderItem[]}
      */
     public OrderItem[ ] getItemsAsArray() {
-        // TODO implement here
-        return null;
+        return items.toArray(items.toArray(new OrderItem[0]));
     }
 
     /**
@@ -133,8 +144,7 @@ public class Order {
      * @return ordered items as {@code Stream<OrderItem>}
      */
     public Stream<OrderItem> getItemsAsStream() {
-        // TODO implement here
-        return null;
+        return items.stream();
     }
 
     /**
@@ -144,8 +154,13 @@ public class Order {
      * @return chainable self-reference
      */
     public Order addItem(Article article, int units) {
-        // TODO implement here
-        return null;
+        if (article != null){
+            items.add(new OrderItem(article,units));
+        }
+        else{
+            throw new IllegalArgumentException();
+        }
+        return this;
     }
 
     /**
@@ -153,14 +168,14 @@ public class Order {
      * @param i index in order items
      */
     public void deleteItem(int i) {
-        // TODO implement here
+        if (i >= 0 && i < items.size()) items.remove(i);
     }
 
     /**
      * Delete all ordered items.
      */
     public void deleteAllItems() {
-        // TODO implement here
+       items.clear();
     }
 
 }
