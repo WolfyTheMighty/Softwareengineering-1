@@ -303,7 +303,7 @@ public class Application_C1 {
         //
         long vat = 0;
         for (OrderItem oi : order.getItemsAsArray()) {
-            vat += calculateIncludedVAT(oi.getArticle().getUnitPrice(), oi.getArticle().getTax()) * oi.getUnitsOrdered();
+            vat += calculateIncludedVAT(oi.getArticle().getUnitPrice()* oi.getUnitsOrdered(), oi.getArticle().getTax()) ;
         }
         return vat;
     }
@@ -312,12 +312,11 @@ public class Application_C1 {
      * private helper to calculate included VAT for a price based on
      * a TAX rate (as defined in Enum TAX).
      */
-    private long calculateIncludedVAT(long price, TAX taxRate) {
-        return switch (taxRate) {
-            case GER_VAT -> (long) (price * 0.19);
-            case GER_VAT_REDUCED -> (long) (price * 0.07);
-            case TAXFREE -> 0;
-        };
+    private long calculateIncludedVAT( long price, TAX taxRate ) {
+        // price / (100+TAX) * (TAX/100)
+     //   return Math.round( price / ( 100.0 + taxRate.rate() ) * ( taxRate.rate() ) );
+        double vat =( price - (  price/(1.0 + (taxRate.rate()/100) )  )     );
+        return Math.round(vat);
     }
 
 

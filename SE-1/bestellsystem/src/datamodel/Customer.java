@@ -65,7 +65,7 @@ public class Customer {
      * @return chainable self-reference
      */
     public Customer setId(long id) {
-        if (this.id < 0) {
+        if (this.id < 0 && id >0){
             this.id = id;
         }
         return this;
@@ -124,10 +124,12 @@ public class Customer {
      * @return chainable self-reference
      */
     public Customer setName(String first, String last) {
-        if (first == null) return this;
-        if (last == null) return this;
-        this.firstName = first;
-        this.lastName = last;
+        if(first != null) {
+            firstName = first;
+        }
+        if(last != null) {
+            lastName = last;
+        }
         return this;
     }
 
