@@ -20,7 +20,7 @@ package datamodel;
  * 
  * @since "0.1.0"
  * @version {@value package_info#Version}
- * @author sgra64
+ * @author Arpad Horvath
  * 
  */
 
@@ -56,7 +56,7 @@ public enum TAX {
 	 * Constructor.
 	 * 
 	 * @param rate tax rate in percent
-	 * @param description tax rate description
+	 * @param descr tax rate description
 	 */
 	TAX( double rate, String descr ) {
 		this.rate = rate;
