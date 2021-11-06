@@ -43,18 +43,18 @@ public class Application_C3_jsondata {
 
         final Application_C3_jsondata app = new Application_C3_jsondata();
 
-//        final String jsonFileName = "src/data/articles_871.json";
+        final String jsonFileName = "src/data/articles_871.json";
         final int limit = 1000;    // limit number of objects imported from JSON
-//
-//        StringBuffer sb = new StringBuffer("from: " + jsonFileName + ":\n\\\\");
-//        //
-////		sb.append( "\nJSON:\n" );
-////		app.printJsonArrayfromFile( sb, jsonFileName, false, limit );
-//        sb.append("\nList<Article>:\n");
-//        List<Article> articles = app.readArticles(jsonFileName, limit);
-//        articles.forEach(article -> app.print(sb, article, " --> "));
-//        sb.append("\\\\\nimported: ").append(articles.size()).append(" Article objects.");
-//        System.out.println(sb);
+
+        StringBuffer sb = new StringBuffer("from: " + jsonFileName + ":\n\\\\");
+        //
+//		sb.append( "\nJSON:\n" );
+//		app.printJsonArrayfromFile( sb, jsonFileName, false, limit );
+        sb.append("\nList<Article>:\n");
+        List<Article> articles = app.readArticles(jsonFileName, limit);
+        articles.forEach(article -> app.print(sb, article, " --> "));
+        sb.append("\\\\\nimported: ").append(articles.size()).append(" Article objects.");
+        System.out.println(sb);
 
         final String jsonFileName2 = "src/data/customer_10.json";
         StringBuffer sb2 = new StringBuffer("from: " + jsonFileName2 + ":\n\\\\");
@@ -352,7 +352,7 @@ public class Application_C3_jsondata {
         return (sb != null ? sb : new StringBuffer())
                 .append(prefix.length > 0 ? prefix[0] : "")
                 .append(customer.getId()).append(", ")
-                .append(customer.getName() + " ")
+                .append(fmtPaddedText(new StringBuffer(), customer.getName(), 36, '[', ".."))
                 .append(Arrays.toString(customer.getContacts()))
                 .append("\n");
     }
