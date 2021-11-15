@@ -61,13 +61,13 @@ public class Application_B3Tests extends Application_B3 {
 		//
 		// test: 2
 		anne.setName( "Anna", null );
-		if( anne.getFirstName().equals( "Anne" ) ) {
+		if( anne.getFirstName().equals( "Anna" ) ) {
 			passed++;
 		} else throw new AssertionError( "firstName not correctly changed" );
 		//
 		// test: 3
 		anne.setName( null, "Bayer" );
-		if( anne.getName().equals( "Bayer, Anne" ) ) {
+		if( anne.getName().equals( "Bayer, Anna" ) ) {
 			passed++;
 		} else throw new AssertionError( "lastName not correctly changed" );
 		//

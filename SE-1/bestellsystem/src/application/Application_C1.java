@@ -239,7 +239,7 @@ public class Application_C1 {
                     case 3 -> name += " " + oq.get(order.getCustomer().getId()) + "rd order";
                     default -> name += " " + oq.get(order.getCustomer().getId()) + "th order";
                 }
-            }
+            } 
             otfmt.line(id,
                     name,
                     order.getItemsAsArray()[i].toString() + ", " + quantity + " " + String.format("%.2f", (double) order.getItemsAsArray()[i].getArticle().getUnitPrice() / 100),
