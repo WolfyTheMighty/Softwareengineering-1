@@ -78,7 +78,7 @@ public class OrderBuilder {
 	/**
 	 * Build and save orders to OrderRepository.
 	 * 
-	 * @param order saved to OrderRepository
+	 *
 	 * @return chainable self-reference
 	 */
 	public OrderBuilder build() {
@@ -87,29 +87,29 @@ public class OrderBuilder {
 		/*
 		 * Look up customers from CustomerRepository.
 		 */
-		Customer eric = crep.findById( 892474 ).get();
-		Customer anne = crep.findById( 643270 ).get();
-		Customer tim = crep.findById( 286516 ).get();
-		Customer nadine = crep.findById( 412396 ).get();
-		Customer khaled = crep.findById( 456454 ).get();
-		Customer lena = crep.findById( 556849 ).get();
-		Customer max = crep.findById( 482596 ).get();
-		Customer brigitte = crep.findById( 660380 ).get();
-		Customer joel = crep.findById( 582596 ).get();
+		Customer eric = (Customer) crep.findById( 892474 ).get();
+		Customer anne = (Customer) crep.findById( 643270 ).get();
+		Customer tim = (Customer) crep.findById( 286516 ).get();
+		Customer nadine = (Customer) crep.findById( 412396 ).get();
+		Customer khaled = (Customer) crep.findById( 456454 ).get();
+		Customer lena = (Customer) crep.findById( 556849 ).get();
+		Customer max = (Customer) crep.findById( 482596 ).get();
+		Customer brigitte = (Customer) crep.findById( 660380 ).get();
+		Customer joel = (Customer) crep.findById( 582596 ).get();
 
 		DataRepository.Repository arep = articleRepository;
 		/*
 		 * Look up articles from ArticleRepository.
 		 */
-		Article tasse = arep.findById( "SKU-458362" ).get();
-		Article becher = arep.findById( "SKU-693856" ).get();
-		Article kanne = arep.findById( "SKU-518957" ).get();
-		Article teller = arep.findById( "SKU-638035" ).get();
-		Article buch_Java = arep.findById( "SKU-278530" ).get();
-		Article buch_OOP = arep.findById( "SKU-425378" ).get();
-		Article pfanne = arep.findById( "SKU-300926" ).get();
-		Article helm = arep.findById( "SKU-663942" ).get();
-		Article karte = arep.findById( "SKU-583978" ).get();
+		Article tasse = (Article) arep.findById( "SKU-458362" ).get();
+		Article becher = (Article) arep.findById( "SKU-693856" ).get();
+		Article kanne = (Article) arep.findById( "SKU-518957" ).get();
+		Article teller = (Article) arep.findById( "SKU-638035" ).get();
+		Article buch_Java = (Article) arep.findById( "SKU-278530" ).get();
+		Article buch_OOP = (Article) arep.findById( "SKU-425378" ).get();
+		Article pfanne = (Article) arep.findById( "SKU-300926" ).get();
+		Article helm = (Article) arep.findById( "SKU-663942" ).get();
+		Article karte = (Article) arep.findById( "SKU-583978" ).get();
 
 		/*
 		 * Build orders.

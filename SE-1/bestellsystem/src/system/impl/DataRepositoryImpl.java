@@ -16,15 +16,22 @@ class DataRepositoryImpl {
 
         @Override
         public Optional<T> findById(long id) {
+            for (T entity : container) {
+                Customer c = (Customer) entity;
+                if (c.getId() == id) return Optional.of(entity);
+            }
+
             return Optional.empty();
         }
 
         @Override
-        public Optional<T> findById(T,ID) {
+        public Optional<T> findById(String id) {
+
             for (T entity : container) {
-                    entity.getID;
+                   Article a = (Article) entity;
+                   if (a.getId().equals(id)) return Optional.of(entity);
             }
-            return;
+            return Optional.empty();
         }
 
         @Override
@@ -44,20 +51,30 @@ class DataRepositoryImpl {
         }
     }
 
-
+    private static DataRepository.Repository<Article> articleRepositoryInstance = null;
     public DataRepository.Repository<Article> getArticleRepository() {
 
-        return new RepositoryImpl<Article>();
+        if(articleRepositoryInstance == null){
+            articleRepositoryInstance = new RepositoryImpl<Article>();
+        }
+        return articleRepositoryInstance;
     }
 
+    private static DataRepository.Repository<Order> orderRepositoryInstance = null;
     public DataRepository.Repository<Order> getOrderRepository() {
-
-        return new RepositoryImpl<Order>();
+        if(orderRepositoryInstance == null){
+            orderRepositoryInstance = new RepositoryImpl<Order>();
+        }
+        return orderRepositoryInstance;
     }
 
-    public DataRepository.Repository<Customer> getCustomerRepository() {
 
-        return new RepositoryImpl<Customer>();
+    private static DataRepository.Repository<Customer> customerRepositoryInstance = null;
+    public DataRepository.Repository<Customer> getCustomerRepository() {
+        if(customerRepositoryInstance == null){
+            customerRepositoryInstance = new RepositoryImpl<Customer>();
+        }
+        return customerRepositoryInstance;
     }
 
 }

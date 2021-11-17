@@ -27,7 +27,11 @@ import system.Calculator;
 
     @Override
     public long calculateIncludedVAT(Iterable<Order> orders) {
-        return 0;
+        long vat = 0;
+        for (Order o : orders) {
+            vat += calculateIncludedVAT(o);
+        }
+        return vat;
     }
 
     @Override
