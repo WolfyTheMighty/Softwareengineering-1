@@ -15,9 +15,8 @@ import datamodel.Article;
 import datamodel.Currency;
 import datamodel.Customer;
 import datamodel.TAX;
-import system.DataRepository.ArticleRepository;
-import system.DataRepository.CustomerRepository;
-import system.DataRepository.OrderRepository;
+import system.DataRepository;
+
 
 
 
@@ -30,7 +29,7 @@ class DataSourceImpl implements DataSource {
 
 
 	@Override
-	public long importCustomerJSON( String jsonFileName, CustomerRepository collector, Integer... limit ) {
+	public long importCustomerJSON(String jsonFileName, DataRepository.Repository collector, Integer... limit ) {
 		long count = read( jsonFileName,
 				jsonNode -> createCustomer( jsonNode ),
 				e -> collector.save( e ),
@@ -40,7 +39,7 @@ class DataSourceImpl implements DataSource {
 	}
 
 	@Override
-	public long importArticleJSON(String jsonFileName, ArticleRepository collector, Integer... limit ) {
+	public long importArticleJSON(String jsonFileName, DataRepository.Repository collector, Integer... limit ) {
 		long count = read( jsonFileName,
 				jsonNode -> createArticle( jsonNode ),
 				e -> collector.save( e ),
@@ -50,7 +49,7 @@ class DataSourceImpl implements DataSource {
 	}
 
 	@Override
-	public long importOrderJSON( String jsonFileName, OrderRepository collector, Integer... limit ) {
+	public long importOrderJSON(String jsonFileName, DataRepository.Repository collector, Integer... limit ) {
 		// TODO Auto-generated method stub
 		return 0;
 	}

@@ -5,12 +5,13 @@ import java.util.Properties;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import datamodel.Article;
+import datamodel.Customer;
+import datamodel.Order;
 import system.Calculator;
+import system.DataRepository;
 import system.Printer;
 import system.RTE;
-import system.DataRepository.ArticleRepository;
-import system.DataRepository.CustomerRepository;
-import system.DataRepository.OrderRepository;
 //
 import static system.RTE.Configuration.KEY_DATASOURCE;
 import static system.RTE.Configuration.JSON_DATASOURCE;
@@ -197,7 +198,7 @@ class RTE_Impl implements RTE {
 		 * @return singleton instance of CustomerRepository
 		 */
 		@Override
-		public CustomerRepository getCustomerRepository() {
+		public DataRepository.Repository<Customer> getCustomerRepository() {
 			return dataRepositoryImpl.getCustomerRepository();
 		}
 
@@ -208,7 +209,7 @@ class RTE_Impl implements RTE {
 		 * @return singleton instance of ArticleRepository
 		 */
 		@Override
-		public ArticleRepository getArticleRepository() {
+		public DataRepository.Repository<Article> getArticleRepository() {
 			return dataRepositoryImpl.getArticleRepository();
 		}
 
@@ -219,7 +220,7 @@ class RTE_Impl implements RTE {
 		 * @return singleton instance of OrderRepository
 		 */
 		@Override
-		public OrderRepository getOrderRepository() {
+		public DataRepository.Repository<Order> getOrderRepository() {
 			return dataRepositoryImpl.getOrderRepository();
 		}
 

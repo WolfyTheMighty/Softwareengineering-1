@@ -1,8 +1,7 @@
 package system.impl;
 
-import system.DataRepository.ArticleRepository;
-import system.DataRepository.CustomerRepository;
-import system.DataRepository.OrderRepository;
+import system.DataRepository;
+
 
 
 /**
@@ -24,11 +23,11 @@ interface DataSource {
 	 * @return number of objects imported
 	 */
 
-	long importCustomerJSON( String jsonFileName, CustomerRepository collector, Integer... limit );
+	long importCustomerJSON(String jsonFileName, DataRepository.Repository collector, Integer... limit );
 	
-	long importArticleJSON( String jsonFileName, ArticleRepository collector, Integer... limit );
+	long importArticleJSON(String jsonFileName, DataRepository.Repository collector, Integer... limit );
 
-	long importOrderJSON( String jsonFileName, OrderRepository collector, Integer... limit );
+	long importOrderJSON(String jsonFileName, DataRepository.Repository collector, Integer... limit );
 
 
 //	<T, ID> void importJSON( String jsonFileName, DataRepository.Repository<T, ID> collector, Integer... limit );
