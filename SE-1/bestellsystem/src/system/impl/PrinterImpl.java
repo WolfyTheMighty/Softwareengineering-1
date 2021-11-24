@@ -7,6 +7,9 @@ import system.Calculator;
 import system.Formatter;
 import system.Printer;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
 
 public class PrinterImpl implements Printer {
@@ -21,9 +24,19 @@ public class PrinterImpl implements Printer {
     }
 
     @Override
+    public void printOrdersToFile(Iterable<Order> orders, String filepath) throws IOException {
+//        File file = new File("filepath");
+        FileWriter fw = new FileWriter(filepath);
+        for (Order o : orders) {
+            fw.write(o.toString());
+        }
+        fw.close();
+    }
+
+    @Override
     public StringBuffer printOrders(Iterable<Order> orders) {
 
-         otfmt = new OrderTableFormatterImpl(formatter ,new Object[][]{
+        otfmt = new OrderTableFormatterImpl(formatter, new Object[][]{
                 // five column table with column specs: width and alignment ('[' left, ']' right)
                 {12, '['}, {20, '['}, {36, '['}, {10, ']'}, {10, ']'}
         })
@@ -47,7 +60,7 @@ public class PrinterImpl implements Printer {
             }
 
 
-            printOrder( order);
+            printOrder(order);
             otfmt
                     .liner("| | |-|-|-|")
                     .line("", "", "total:", calculator.calculateValue(order), calculator.calculateIncludedVAT(order))

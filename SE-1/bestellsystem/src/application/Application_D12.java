@@ -4,6 +4,8 @@ import datamodel.Order;
 import system.RTE;
 import system.RTE.Runtime;
 //
+import java.io.IOException;
+
 import static system.RTE.Configuration.KEY_DATASOURCE;
 import static system.RTE.Configuration.JSON_DATASOURCE;
 import static system.RTE.Configuration.KEY_DATASOURCE_CUSTOMER;
@@ -26,6 +28,12 @@ public class Application_D12 {
 	 */
 	public static void main( String[] args ) {
 		//
+
+		//idee
+		//plan
+		//design
+		//implementierung
+		//test
 		System.out.println( "SE1 Bestellsystem" );
 
 		Runtime runtime = RTE.getInstance()
@@ -56,6 +64,19 @@ public class Application_D12 {
 		StringBuffer sb = runtime.getPrinter().printOrders( orders );
 
 		System.out.println( sb.toString() );
+
+		long count = runtime.getOrderRepository().count();
+//		Iterable<Order> orders = runtime.getOrderRepository().findAll();
+
+		String filepath = "output/orders.txt";  // path to save orders as table
+		try {
+			runtime.getPrinter().printOrdersToFile( orders, filepath );
+			System.out.println( count + " orders printed to: " + filepath );
+		} catch( IOException e ) {
+			System.err.println( "Error printing orders to: " + filepath +
+					", reason: " + e.getMessage() );
+		}
+
 
 		runtime.shutdown( rt -> { System.out.println( "...shutting down." ); } );
 	}
