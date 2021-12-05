@@ -8,10 +8,7 @@ import java.util.function.Consumer;
 import datamodel.Article;
 import datamodel.Customer;
 import datamodel.Order;
-import system.Calculator;
-import system.DataRepository;
-import system.Printer;
-import system.RTE;
+import system.*;
 //
 import static system.RTE.Configuration.KEY_DATASOURCE;
 import static system.RTE.Configuration.JSON_DATASOURCE;
@@ -130,7 +127,8 @@ class RTE_Impl implements RTE {
 		 */
 		private final DataRepositoryImpl dataRepositoryImpl = new DataRepositoryImpl();
 
-
+		private final InventoryManager inventoryManager = new InventoryManagaerMOCK();
+		private final OrderBuilder orderBuilder = new OrderBuilderImpl(this);
 		/**
 		 * Private constructor.
 		 * 
@@ -253,6 +251,16 @@ class RTE_Impl implements RTE {
 					});
 			});
 			return this;
+		}
+
+		@Override
+		public OrderBuilder getOrderBuilder() {
+			return null;
+		}
+
+		@Override
+		public InventoryManager getInventoryManager() {
+			return inventoryManager;
 		}
 	}
 }
