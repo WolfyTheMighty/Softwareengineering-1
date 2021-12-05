@@ -16,14 +16,41 @@ import datamodel.Order;
 public interface DataRepository {
 
 	/**
-	 * Public interface of the Customer repository.
+	 * Public interface of the generic repository.
 	 *
 	 */
 	interface Repository<T> {
+
+		/**
+		 * finds Object with given long id
+		 * @param id id to be searched for
+		 * @return Optional object with given id or empty optional
+		 */
 		Optional<T> findById( long id );
+		/**
+		 * finds Object with given long id
+		 * @param id id to be searched for
+		 * @return Optional object with given id or empty optional
+		 */
 		Optional<T> findById( String id );
+
+		/**
+		 * Gives a list with all objets in the repository
+		 * @return Iterable with all objects in rep
+		 */
 		Iterable<T> findAll();
+
+		/**
+		 * Amount of entries in repository
+		 * @return Amount of entries in repository
+		 */
 		long count();
+
+		/**
+		 * Saves a entity to the repository
+		 * @param entity Generic entety to be added to repository
+		 * @return entity which was saved
+		 */
 		T save( T entity );
 	}
 

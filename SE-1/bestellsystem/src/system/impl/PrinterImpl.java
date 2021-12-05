@@ -1,18 +1,15 @@
 package system.impl;
 
-import application.Application_C1;
 import datamodel.Currency;
 import datamodel.Order;
 import system.Calculator;
 import system.Formatter;
 import system.Printer;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.HashMap;
 
-public class PrinterImpl implements Printer {
+class PrinterImpl implements Printer {
 
     private final Calculator calculator;
     Formatter formatter = createFormatter();
@@ -26,11 +23,13 @@ public class PrinterImpl implements Printer {
     @Override
     public void printOrdersToFile(Iterable<Order> orders, String filepath) throws IOException {
 //        File file = new File("filepath");
-        FileWriter fw = new FileWriter(filepath);
-        for (Order o : orders) {
-            fw.write(o.toString());
-        }
-        fw.close();
+//        FileWriter fw = new FileWriter(file);
+        Writer writer = new BufferedWriter(new OutputStreamWriter(
+                new FileOutputStream(filepath), "utf-8"));
+
+        writer.write(printOrders(orders).toString());
+
+        writer.close();
     }
 
     @Override

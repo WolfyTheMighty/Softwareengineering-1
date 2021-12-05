@@ -5,7 +5,7 @@ import datamodel.OrderItem;
 import datamodel.TAX;
 import system.Calculator;
 
- public class CalculatorImpl implements Calculator {
+  class CalculatorImpl implements Calculator {
 
     @Override
     public long calculateValue(Iterable<Order> orders) {

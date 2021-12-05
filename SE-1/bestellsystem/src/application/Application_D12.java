@@ -68,7 +68,7 @@ public class Application_D12 {
 		long count = runtime.getOrderRepository().count();
 //		Iterable<Order> orders = runtime.getOrderRepository().findAll();
 
-		String filepath = "output/orders.txt";  // path to save orders as table
+		String filepath = "src/output/orders.txt";  // path to save orders as table
 		try {
 			runtime.getPrinter().printOrdersToFile( orders, filepath );
 			System.out.println( count + " orders printed to: " + filepath );
