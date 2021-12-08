@@ -24,12 +24,22 @@ class PrinterImpl implements Printer {
     public void printOrdersToFile(Iterable<Order> orders, String filepath) throws IOException {
 //        File file = new File("filepath");
 //        FileWriter fw = new FileWriter(file);
-        Writer writer = new BufferedWriter(new OutputStreamWriter(
-                new FileOutputStream(filepath), "utf-8"));
+//        Writer writer = new BufferedWriter(new OutputStreamWriter(
+//                new FileOutputStream(filepath), "utf-8"));
+//
+//        writer.write(printOrders(orders).toString());
+//
+//        writer.close();
+        File file = new File(filepath);
+        if(!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        // write data to before created file
+        BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(filepath));
+        bufferedWriter.write(printOrders(orders).toString());
+        bufferedWriter.close();
 
-        writer.write(printOrders(orders).toString());
 
-        writer.close();
     }
 
     @Override
