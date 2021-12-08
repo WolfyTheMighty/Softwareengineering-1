@@ -10,7 +10,7 @@
 .settings
 #
 # IntelliJ
-.iml
+**/*.iml
 .idea
 #
 # BlueJ
