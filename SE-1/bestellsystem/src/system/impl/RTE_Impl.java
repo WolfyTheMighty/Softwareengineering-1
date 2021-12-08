@@ -255,7 +255,7 @@ class RTE_Impl implements RTE {
 
 		@Override
 		public OrderBuilder getOrderBuilder() {
-			return null;
+			return orderBuilder;
 		}
 
 		@Override
