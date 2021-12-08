@@ -30,7 +30,7 @@ doc
 
 # ignore generated directories and compiled output
 bin
-out
+**/out
 target
 **/*.class
 **/*.jar
