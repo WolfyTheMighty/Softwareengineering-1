@@ -10,7 +10,7 @@
 .settings
 #
 # IntelliJ
-.iml
+**/*.iml
 .idea
 #
 # BlueJ
@@ -30,7 +30,7 @@ doc
 
 # ignore generated directories and compiled output
 bin
-out
+**/*out
 target
 **/*.class
 **/*.jar
