@@ -1,19 +1,23 @@
 package application;
 
-import system.DataRepository;
 import system.RTE.Runtime;
+import system.Calculator;
+import system.DataRepository;
 
 import datamodel.Article;
+import datamodel.Currency;
 import datamodel.Customer;
 import datamodel.Order;
-
+import system.DataRepository;
+import system.Formatter;
+import system.InventoryManager;
 
 
 /**
  * Singleton component that builds orders and stores them in the
  * OrderRepository.
  * 
- * @author Arpad Horvath
+ * @author sgra64
  *
  */
 
@@ -29,9 +33,14 @@ public class OrderBuilder {
 	 */
 	private final DataRepository.Repository customerRepository;
 	//
-	private final DataRepository.Repository articleRepository;
+//	private final ArticleRepository articleRepository;
+	private final InventoryManager inventoryManager;
 	//
 	private final DataRepository.Repository orderRepository;
+	//
+	private final Calculator calculator;
+	//
+	private final Formatter formatter;
 
 
 	/**
@@ -56,29 +65,43 @@ public class OrderBuilder {
 	 */
 	private OrderBuilder( Runtime runtime ) {
 		this.customerRepository = runtime.getCustomerRepository();
-		this.articleRepository = runtime.getArticleRepository();
+//		this.articleRepository = runtime.getArticleRepository();
+		this.inventoryManager = runtime.getInventoryManager();
 		this.orderRepository = runtime.getOrderRepository();
+		this.calculator = runtime.getCalculator();
+		this.formatter = runtime.getPrinter().createFormatter();
 	}
 
 
 	/**
-	 * Save order to OrderRepository.
+	 * Save order to OrderRepository if order is fillable (all order items
+	 * can be allocated from current inventory).
 	 * 
 	 * @param order saved to OrderRepository
 	 * @return chainable self-reference
 	 */
 	public boolean accept( Order order ) {
-		// TODO: validate order
-		boolean valid = true;
-		orderRepository.save( order );
-		return valid;
+		long orderValue = calculator.calculateValue( order );
+		//
+		boolean isFillable = inventoryManager.isFillable( order );
+		if( isFillable && (
+				isFillable = inventoryManager.fill( order )
+		) ) {
+			StringBuffer fmtValue = formatter.fmtPaddedPrice( orderValue, 12, ' ', Currency.NONE );
+			System.out.println( "Order: " + order.getId() + " filled:" + fmtValue.toString() );
+			orderRepository.save( order );	// save filled order
+		} else {
+			StringBuffer fmtValue = formatter.fmtPrice( orderValue, Currency.NONE );
+			System.err.println( "Order: " + order.getId() + " is not fillable from current inventory: " + fmtValue.toString() );
+		}
+		return isFillable;
 	}
 
 
 	/**
 	 * Build and save orders to OrderRepository.
 	 * 
-	 *
+	 * @param order saved to OrderRepository
 	 * @return chainable self-reference
 	 */
 	public OrderBuilder build() {
@@ -88,28 +111,29 @@ public class OrderBuilder {
 		 * Look up customers from CustomerRepository.
 		 */
 		Customer eric = (Customer) crep.findById( 892474 ).get();
-		Customer anne = (Customer) crep.findById( 643270 ).get();
-		Customer tim = (Customer) crep.findById( 286516 ).get();
-		Customer nadine = (Customer) crep.findById( 412396 ).get();
-		Customer khaled = (Customer) crep.findById( 456454 ).get();
-		Customer lena = (Customer) crep.findById( 556849 ).get();
-		Customer max = (Customer) crep.findById( 482596 ).get();
-		Customer brigitte = (Customer) crep.findById( 660380 ).get();
-		Customer joel = (Customer) crep.findById( 582596 ).get();
+		Customer anne = (Customer)crep.findById( 643270 ).get();
+		Customer tim = (Customer)crep.findById( 286516 ).get();
+		Customer nadine = (Customer)crep.findById( 412396 ).get();
+		Customer khaled = (Customer)crep.findById( 456454 ).get();
+		Customer lena = (Customer)crep.findById( 556849 ).get();
+		Customer max = (Customer)crep.findById( 482596 ).get();
+		Customer brigitte =(Customer) crep.findById( 660380 ).get();
+		Customer joel = (Customer)crep.findById( 582596 ).get();
 
-		DataRepository.Repository arep = articleRepository;
+//		ArticleRepository arep = articleRepository;
+		InventoryManager arep = inventoryManager;
 		/*
 		 * Look up articles from ArticleRepository.
 		 */
-		Article tasse = (Article) arep.findById( "SKU-458362" ).get();
-		Article becher = (Article) arep.findById( "SKU-693856" ).get();
-		Article kanne = (Article) arep.findById( "SKU-518957" ).get();
-		Article teller = (Article) arep.findById( "SKU-638035" ).get();
-		Article buch_Java = (Article) arep.findById( "SKU-278530" ).get();
-		Article buch_OOP = (Article) arep.findById( "SKU-425378" ).get();
-		Article pfanne = (Article) arep.findById( "SKU-300926" ).get();
-		Article helm = (Article) arep.findById( "SKU-663942" ).get();
-		Article karte = (Article) arep.findById( "SKU-583978" ).get();
+		Article tasse =(Article) arep.findById( "SKU-458362" ).get();
+		Article becher =(Article) arep.findById( "SKU-693856" ).get();
+		Article kanne = (Article)arep.findById( "SKU-518957" ).get();
+		Article teller = (Article)arep.findById( "SKU-638035" ).get();
+		Article buch_Java =(Article) arep.findById( "SKU-278530" ).get();
+		Article buch_OOP =(Article) arep.findById( "SKU-425378" ).get();
+		Article pfanne =(Article) arep.findById( "SKU-300926" ).get();
+		Article helm =(Article) arep.findById( "SKU-663942" ).get();
+		Article karte = (Article)arep.findById( "SKU-583978" ).get();
 
 		/*
 		 * Build orders.

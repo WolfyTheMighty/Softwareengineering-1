@@ -15,9 +15,9 @@ import datamodel.Article;
 import datamodel.Currency;
 import datamodel.Customer;
 import datamodel.TAX;
+import system.InventoryManager;
 import system.DataRepository;
-
-
+import system.DataRepository;
 
 
 /**
@@ -29,7 +29,7 @@ class DataSourceImpl implements DataSource {
 
 
 	@Override
-	public long importCustomerJSON(String jsonFileName, DataRepository.Repository collector, Integer... limit ) {
+	public long importCustomerJSON( String jsonFileName, CustomerRepository collector, Integer... limit ) {
 		long count = read( jsonFileName,
 				jsonNode -> createCustomer( jsonNode ),
 				e -> collector.save( e ),
@@ -39,17 +39,28 @@ class DataSourceImpl implements DataSource {
 	}
 
 	@Override
-	public long importArticleJSON(String jsonFileName, DataRepository.Repository collector, Integer... limit ) {
+	public long importArticleJSON( String jsonFileName, InventoryManager inventoryManager, Integer... limit ) {
 		long count = read( jsonFileName,
-				jsonNode -> createArticle( jsonNode ),
-				e -> collector.save( e ),
+				jsonNode -> {
+					Optional<Article> aopt = createArticle( jsonNode );
+					aopt.ifPresent( a -> {
+						inventoryManager.save( a );	// add article to inventoryManager 
+						JsonNode jn = jsonNode.get( "unitsInStock" );	// try to get value from JSON
+						if( jn != null ) {
+							inventoryManager.update( a.getId(), jn.asInt() );
+						}
+					});
+					return aopt;
+				},
+//				e -> collector.save( e ),
+				e -> {},	// article already collected with: inventoryManager.create( a )
 				limit
 		);
 		return count;
 	}
 
 	@Override
-	public long importOrderJSON(String jsonFileName, DataRepository.Repository collector, Integer... limit ) {
+	public long importOrderJSON( String jsonFileName, OrderRepository collector, Integer... limit ) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
