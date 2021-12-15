@@ -24,7 +24,7 @@ interface DataSource {
 	 * @return number of objects imported
 	 */
 
-	long importCustomerJSON( String jsonFileName, DataRepository collector, Integer... limit );
+	long importCustomerJSON( String jsonFileName, DataRepository.Repository collector, Integer... limit );
 
 	long importArticleJSON( String jsonFileName, InventoryManager inventoryManager, Integer... limit );
 

@@ -4,7 +4,6 @@ import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
-import datamodel.Article;
 import datamodel.Customer;
 import datamodel.Order;
 import system.impl.InstanceAccessor;
@@ -141,8 +140,14 @@ public interface RTE {
 		 * 
 		 * @return singleton instance of ArticleRepository
 		 */
-		DataRepository.Repository<Article> getArticleRepository();
+//		DataRepository.Repository<Article> getArticleRepository();
 
+		/**
+		 * Return singleton instance of InventoryManager.
+		 *
+		 * @return singleton instance of InventoryManager
+		 */
+		InventoryManager getInventoryManager();
 
 		/**
 		 * Return singleton instance of OrderRepository.

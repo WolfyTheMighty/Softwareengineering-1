@@ -11,7 +11,7 @@ import datamodel.Order;
  *
  */
 
-public interface InventoryManager extends DataRepository {
+public interface InventoryManager extends DataRepository.Repository {
 
 
 	/**

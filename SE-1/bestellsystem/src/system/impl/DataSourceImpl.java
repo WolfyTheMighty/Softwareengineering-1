@@ -29,7 +29,7 @@ class DataSourceImpl implements DataSource {
 
 
 	@Override
-	public long importCustomerJSON( String jsonFileName, CustomerRepository collector, Integer... limit ) {
+	public long importCustomerJSON( String jsonFileName, DataRepository.Repository collector, Integer... limit ) {
 		long count = read( jsonFileName,
 				jsonNode -> createCustomer( jsonNode ),
 				e -> collector.save( e ),
@@ -59,11 +59,11 @@ class DataSourceImpl implements DataSource {
 		return count;
 	}
 
-	@Override
-	public long importOrderJSON( String jsonFileName, OrderRepository collector, Integer... limit ) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+//	@Override
+//	public long importOrderJSON( String jsonFileName, DataRepository.Repository collector, Integer... limit ) {
+//		// TODO Auto-generated method stub
+//		return 0;
+//	}
 
 
 	/**

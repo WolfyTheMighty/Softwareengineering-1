@@ -5,12 +5,12 @@ import java.util.Properties;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
+import datamodel.Customer;
+import datamodel.Order;
 import system.Calculator;
 import system.Printer;
 import system.RTE;
-import system.DataRepository.ArticleRepository;
-import system.DataRepository.CustomerRepository;
-import system.DataRepository.OrderRepository;
+import system.DataRepository;
 import system.InventoryManager;
 //
 import static system.RTE.Configuration.KEY_DATASOURCE;
@@ -156,7 +156,7 @@ class RTE_Impl implements RTE {
 			Calculator calculator = getCalculator();
 			this.printer = new PrinterImpl( calculator );	// inject dependency
 			//
-			ArticleRepository articleRepository = dataRepositoryImpl.getArticleRepository();
+			DataRepository.Repository articleRepository = dataRepositoryImpl.getArticleRepository();
 			this.inventoryManager = InventoryManagerImpl
 					.getInstance( articleRepository );		// inject dependency
 		}
@@ -222,7 +222,7 @@ class RTE_Impl implements RTE {
 		 */
 
 		@Override
-		public CustomerRepository getCustomerRepository() {
+		public DataRepository.Repository<Customer> getCustomerRepository() {
 			return dataRepositoryImpl.getCustomerRepository();
 		}
 
@@ -249,7 +249,7 @@ class RTE_Impl implements RTE {
 		 */
 
 		@Override
-		public OrderRepository getOrderRepository() {
+		public DataRepository.Repository<Order> getOrderRepository() {
 			return dataRepositoryImpl.getOrderRepository();
 		}
 
@@ -282,7 +282,7 @@ class RTE_Impl implements RTE {
 					DataSource jsonData = new DataSourceImpl();
 					//
 					config.get( KEY_DATASOURCE_CUSTOMER ).ifPresent( jsonFileName -> {
-						long count = jsonData.importCustomerJSON( jsonFileName, getCustomerRepository() );
+						long count = jsonData.importCustomerJSON( jsonFileName, getCustomerRepository());
 						System.out.println( " + loaded " + count + " obj from: " + jsonFileName );
 					});
 					//
@@ -293,7 +293,7 @@ class RTE_Impl implements RTE {
 					});
 					//
 					config.get( KEY_DATASOURCE_ORDER ).ifPresent( jsonFileName -> {
-						long count = jsonData.importOrderJSON( jsonFileName, getOrderRepository() );
+						long count = ((DataSourceImpl) jsonData).importOrderJSON( jsonFileName, getOrderRepository() );
 						System.out.println( " + loaded " + count + " obj from: " + jsonFileName );
 					});
 			});
