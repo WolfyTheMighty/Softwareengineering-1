@@ -10,6 +10,7 @@ import system.InventoryManager;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class InventoryManagerImpl implements InventoryManager {
@@ -47,12 +48,13 @@ public class InventoryManagerImpl implements InventoryManager {
     @Override
     public StringBuffer printInventory() {
         return printInventory(
-                StreamSupport.stream( articleRepository.findAll().spliterator(), false )
+                StreamSupport.stream( aRep.findAll().spliterator(), false )
         );
     }
 
-    @Override
-    public StringBuffer printInventory(int sortedBy, boolean decending, Integer... limit) {
+//    @Override
+    private StringBuffer printInventory( Stream<Article> articleStream ) {
+//    public StringBuffer printInventory(int sortedBy, boolean decending, Integer... limit) {
         //
         Formatter formatter = new FormatterImpl();
         Formatter.TableFormatter tfmt = new TableFormatterImpl( formatter, new Object[][] {
@@ -89,7 +91,7 @@ public class InventoryManagerImpl implements InventoryManager {
         return tfmt.getFormatter().getBuffer();
     }
 
-    public void save(Article article) {
+    public Article save(Article article) {
         if( article == null )
             throw new IllegalArgumentException( "illegal article: null" );
         //
@@ -97,7 +99,7 @@ public class InventoryManagerImpl implements InventoryManager {
         if( id == null )
             throw new IllegalArgumentException( "illegal article.id: null" );
         //
-        articleRepository.save( article );	// save, make sure to avoid duplicates
+        aRep.save( article );	// save, make sure to avoid duplicates
         //
         if( ! inventory.containsKey( id ) ) {
             this.inventory.put( id, Integer.valueOf( 0 ) );

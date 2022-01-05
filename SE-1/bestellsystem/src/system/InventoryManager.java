@@ -1,6 +1,9 @@
 package system;
 
+import datamodel.Article;
 import datamodel.Order;
+
+import java.util.stream.Stream;
 
 
 /**
@@ -67,15 +70,22 @@ public interface InventoryManager extends DataRepository.Repository {
 	StringBuffer printInventory();
 
 
-	/**
-	 * Print inventory as table with sorting and limiting criteria.
-	 * 
-	 * @param sortedBy sorting criteria 1: byPrice; 2: byValue; 3: byUnits; 4: byDescription; 5: bySKU; else: unsorted
-	 * @param decending true if in descending order
-	 * @param limit upper boundary of articles printed after sorting
-	 * @return printed inventory (as table).
-	 */
+//	/**
+//	 * Print inventory as table with sorting and limiting criteria.
+//	 *
+//	 * @param sortedBy sorting criteria 1: byPrice; 2: byValue; 3: byUnits; 4: byDescription; 5: bySKU; else: unsorted
+//	 * @param decending true if in descending order
+//	 * @param limit upper boundary of articles printed after sorting
+//	 * @return printed inventory (as table).
+//	 */
 
-	StringBuffer printInventory( int sortedBy, boolean decending, Integer... limit );
+//	StringBuffer printInventory( int sortedBy, boolean decending, Integer... limit );
+
+	/**
+	 *
+ 	 * @param articleStream
+	 * @return
+	 */
+//	StringBuffer printInventory( Stream<Article> articleStream ) ;
 
 }
