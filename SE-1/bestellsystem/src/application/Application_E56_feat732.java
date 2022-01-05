@@ -56,7 +56,7 @@ public class Application_E56_feat732 {
 
 		// adjust inventory to test order acceptance in OrderBuilder.build()
 		//
-//		im.update( "SKU-693856", 8 + 3 );	// SKU-693856 Becher (Eric's 1st: 8x, 4th order: 3x)
+		im.update( "SKU-693856", 2 );	// SKU-693856 Becher (Eric's 1st: 8x, 4th order: 3x)
 //		im.update( "SKU-425378", 0 );	// update inventory for: SKU-425378 Buch 'OOP'
 //		im.update( "SKU-583978", 0 );	// update inventory for: SKU-583978 Fahrradkarte
 //		im.update( "SKU-300926", 0 );	// update inventory for: SKU-300926 Pfanne

@@ -8,9 +8,7 @@ import system.DataRepository;
 import system.Formatter;
 import system.InventoryManager;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -39,22 +37,21 @@ public class InventoryManagerImpl implements InventoryManager {
     @Override
     public boolean isFillable(Order order) throws IllegalArgumentException {
         if (order == null) throw new IllegalArgumentException();
-        for (OrderItem oi: order.getItemsAsArray()) {
-                if (oi.getUnitsOrdered() > inventory.get(oi.getArticle().getId())){
-                    return false;
-                }
+        for (OrderItem oi : order.getItemsAsArray()) {
+            if (oi.getUnitsOrdered() > inventory.get(oi.getArticle().getId())) {
+                return false;
+            }
         }
         return true;
     }
 
     @Override
     public boolean fill(Order order) {
-        if(isFillable(order)){
-            for (OrderItem oi: order.getItemsAsArray()) {
+        if (isFillable(order)) {
+            for (OrderItem oi : order.getItemsAsArray()) {
                 inventory.put(oi.getArticle().getId(), inventory.get(oi.getArticle().getId()) - oi.getUnitsOrdered());
             }
-        }
-        else{
+        } else {
             return false;
         }
         return true;
@@ -62,15 +59,16 @@ public class InventoryManagerImpl implements InventoryManager {
 
     @Override
     public StringBuffer printInventory() {
+//        return printInventory(
+//                StreamSupport.stream(aRep.findAll().spliterator(), false)
+//        );
         return printInventory(
-                StreamSupport.stream(aRep.findAll().spliterator(), false)
+                StreamSupport.stream(aRep.findAll().spliterator(), false), 3, true
         );
     }
 
-    //    @Override
-    private StringBuffer printInventory(Stream<Article> articleStream) {
-//    public StringBuffer printInventory(int sortedBy, boolean decending, Integer... limit) {
-        //
+    @Override
+    public StringBuffer printInventory(Stream<Article> articleStream, int sortedBy, boolean decending, Integer... limit) {
         Formatter formatter = new FormatterImpl();
         Formatter.TableFormatter tfmt = new TableFormatterImpl(formatter, new Object[][]{
                 // five column table with column specs: width and alignment ('[' left, ']' right)
@@ -81,8 +79,64 @@ public class InventoryManagerImpl implements InventoryManager {
                 .hdr("||", "", "", "Price", "in-Stock", "(in €)")
                 .liner("+-+-+-+-+-+");
         //
+
+
         long totalValue = articleStream
-                .map(a -> {
+                .limit(limit != null  && limit.length > 0 && limit[0] > 0 ? limit[0]: aRep.count())
+                .sorted((a1, a2) -> {
+                    boolean des = decending;
+                            switch (sortedBy) {
+                                case 1 -> {
+                                    if(des){
+                                        return Long.compare(a2.getUnitPrice(), a1.getUnitPrice());
+                                    }
+                                     return Long.compare(a1.getUnitPrice(), a2.getUnitPrice());
+                                }
+
+                                case 2 -> {
+                                    if(des) {
+                                        return Long.compare(a2.getUnitPrice() * this.inventory.get(a2.getId()), a1.getUnitPrice() * this.inventory.get(a1.getId()));
+
+                                    }
+                                    return Long.compare(a1.getUnitPrice() * this.inventory.get(a1.getId()), a2.getUnitPrice() * this.inventory.get(a2.getId()));
+                                }
+                                case 3 -> {
+                                    if(des) {
+                                        return Long.compare(this.inventory.get(a2.getId()), this.inventory.get(a1.getId()));
+
+                                    }
+                                    return Long.compare(this.inventory.get(a1.getId()), this.inventory.get(a2.getId()));
+                                }
+                                case 4 -> {
+                                    if(des) {
+                                        return CharSequence.compare(a2.getDescription(), a1.getDescription());
+
+                                    }
+                                    return CharSequence.compare(a1.getDescription(), a2.getDescription());
+                                }
+                                case 5 -> {
+                                    if(des) {
+                                        return CharSequence.compare(a2.getId(), a1.getId());
+
+                                    }
+                                    return CharSequence.compare(a1.getId(), a2.getId());
+                                }
+
+                            }
+                            return 0;
+                        }
+
+                )
+//                .sorted(() -> {
+//                    decending ? Collections.reverseOrder(): 0;
+//                })
+
+//        if (decending) {
+//           articleStream = articleStream.sorted(Collections.reverseOrder());
+//        }
+//
+//        long totalValue = articleStream
+        .map(a -> {
                     long unitsInStock = this.inventory.get(a.getId());
                     long value = a.getUnitPrice() * unitsInStock;
                     tfmt.hdr("||",
@@ -105,9 +159,42 @@ public class InventoryManagerImpl implements InventoryManager {
         return tfmt.getFormatter().getBuffer();
     }
 
-//    public Article save(Article article) {
-//
+//    private StringBuffer printInventory(Stream<Article> articleStream) {
+////
+//        Formatter formatter = new FormatterImpl();
+//        Formatter.TableFormatter tfmt = new TableFormatterImpl(formatter, new Object[][]{
+//                // five column table with column specs: width and alignment ('[' left, ']' right)
+//                {12, '['}, {32, '['}, {12, ']'}, {10, ']'}, {14, ']'}
+//        })
+//                .liner("+-+-+-+-+-+")        // print table header
+//                .hdr("||", "Inv.-Id", "Article / Unit", "Unit", "Units", "Value")
+//                .hdr("||", "", "", "Price", "in-Stock", "(in €)")
+//                .liner("+-+-+-+-+-+");
+//        //
+//        long totalValue = articleStream
+//                .map(a -> {
+//                    long unitsInStock = this.inventory.get(a.getId());
+//                    long value = a.getUnitPrice() * unitsInStock;
+//                    tfmt.hdr("||",
+//                            a.getId(),
+//                            a.getDescription(),
+//                            formatter.fmtPrice(a.getUnitPrice(), a.getCurrency()).toString(),
+//                            Long.toString(unitsInStock),
+//                            formatter.fmtPrice(value, a.getCurrency()).toString()
+//                    );
+//                    return value;
+//                })
+//                .reduce(0L, (a, b) -> a + b);
+//        //
+//        String inventoryValue = formatter.fmtPrice(totalValue, Currency.EUR).toString();
+//        tfmt
+//                .liner("+-+-+-+-+-+")
+//                .hdr("", "", "Invent", "ory Value:", inventoryValue)
+//        ;
+//        //
+//        return tfmt.getFormatter().getBuffer();
 //    }
+
 
     private static InventoryManager inventoryManagerInstance = null;
 
