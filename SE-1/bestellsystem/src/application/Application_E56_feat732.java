@@ -39,8 +39,8 @@ public class Application_E56_feat732 {
 				 * configure customer and article data imported from JSON
 				 */
 				config.put( KEY_DATASOURCE, JSON_DATASOURCE );
-				config.put( KEY_DATASOURCE_CUSTOMER, "src/data/customers_10.json" );
-				config.put( KEY_DATASOURCE_ARTICLE, "src/data/articles_9.json" );
+				config.put( KEY_DATASOURCE_CUSTOMER, "bestellsystem/src/data/customers_10.json" );
+				config.put( KEY_DATASOURCE_ARTICLE, "bestellsystem/src/data/articles_9.json" );
 			})
 			//
 			.launch( (config, rt ) -> {

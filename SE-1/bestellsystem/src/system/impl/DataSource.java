@@ -28,7 +28,7 @@ interface DataSource {
 
 	long importArticleJSON( String jsonFileName, InventoryManager inventoryManager, Integer... limit );
 
-//	long importOrderJSON( String jsonFileName, OrderRepository collector, Integer... limit );
+//	long importOrderJSON( String jsonFileName, DataRepository.Repository collector, Integer... limit );
 
 
 //	<T, ID> void importJSON( String jsonFileName, DataRepository.Repository<T, ID> collector, Integer... limit );

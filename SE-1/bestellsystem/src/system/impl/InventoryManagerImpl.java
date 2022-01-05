@@ -15,9 +15,9 @@ public class InventoryManagerImpl implements InventoryManager {
      * internal data structure to manage inventory (unitsInStore) by Article‐id's.
      */
     private final Map<String, Integer> inventory = new HashMap<>();
-    DataRepository.Repository aRep;
+    DataRepositoryImpl.RepositoryImpl aRep;
 
-    private InventoryManagerImpl(DataRepository.Repository aRep) {
+    private InventoryManagerImpl(DataRepositoryImpl.RepositoryImpl aRep) {
         this.aRep = aRep;
     }
 
@@ -57,7 +57,7 @@ public class InventoryManagerImpl implements InventoryManager {
 
     private static InventoryManager inventoryManagerInstance = null;
 
-    public static InventoryManager getInstance(DataRepository.Repository aRep) {
+    public static InventoryManager getInstance(DataRepositoryImpl.RepositoryImpl aRep) {
         if (inventoryManagerInstance == null) {
             inventoryManagerInstance = new InventoryManagerImpl(aRep);
         }
@@ -71,7 +71,7 @@ public class InventoryManagerImpl implements InventoryManager {
 
     @Override
     public Optional findById(String id) {
-        return;
+        return aRep.findByID(id);
     }
 
     @Override

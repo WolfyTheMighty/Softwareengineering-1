@@ -156,7 +156,7 @@ class RTE_Impl implements RTE {
 			Calculator calculator = getCalculator();
 			this.printer = new PrinterImpl( calculator );	// inject dependency
 			//
-			DataRepository.Repository articleRepository = dataRepositoryImpl.getArticleRepository();
+			DataRepositoryImpl.RepositoryImpl articleRepository = dataRepositoryImpl.getArticleRepository();
 			this.inventoryManager = InventoryManagerImpl
 					.getInstance( articleRepository );		// inject dependency
 		}
@@ -292,10 +292,10 @@ class RTE_Impl implements RTE {
 						System.out.println( " + loaded " + count + " obj from: " + jsonFileName );
 					});
 					//
-					config.get( KEY_DATASOURCE_ORDER ).ifPresent( jsonFileName -> {
-						long count = ((DataSourceImpl) jsonData).importOrderJSON( jsonFileName, getOrderRepository() );
-						System.out.println( " + loaded " + count + " obj from: " + jsonFileName );
-					});
+//					config.get( KEY_DATASOURCE_ORDER ).ifPresent( jsonFileName -> {
+//						long count = ((DataSourceImpl) jsonData).importOrderJSON( jsonFileName, getOrderRepository() );
+//						System.out.println( " + loaded " + count + " obj from: " + jsonFileName );
+//					});
 			});
 			return this;
 		}
