@@ -79,7 +79,7 @@ public interface InventoryManager extends DataRepository.Repository {
 	 * @return printed inventory (as table).
 	 */
 
-	StringBuffer printInventory( Stream<Article> articleStream,int sortedBy, boolean decending , Integer... limit);
+	StringBuffer printInventory( int sortedBy, boolean decending , Integer... limit);
 
 	/**
 	 *

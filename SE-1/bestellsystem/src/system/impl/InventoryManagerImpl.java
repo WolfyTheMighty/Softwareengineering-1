@@ -62,13 +62,12 @@ public class InventoryManagerImpl implements InventoryManager {
 //        return printInventory(
 //                StreamSupport.stream(aRep.findAll().spliterator(), false)
 //        );
-        return printInventory(
-                StreamSupport.stream(aRep.findAll().spliterator(), false), 3, true
-        );
+        return printInventory(3, true);
     }
 
     @Override
-    public StringBuffer printInventory(Stream<Article> articleStream, int sortedBy, boolean decending, Integer... limit) {
+    public StringBuffer printInventory(int sortedBy, boolean decending, Integer... limit) {
+        Stream<Article> articleStream = StreamSupport.stream(aRep.findAll().spliterator(), false);
         Formatter formatter = new FormatterImpl();
         Formatter.TableFormatter tfmt = new TableFormatterImpl(formatter, new Object[][]{
                 // five column table with column specs: width and alignment ('[' left, ']' right)
@@ -82,40 +81,40 @@ public class InventoryManagerImpl implements InventoryManager {
 
 
         long totalValue = articleStream
-                .limit(limit != null  && limit.length > 0 && limit[0] > 0 ? limit[0]: aRep.count())
+
                 .sorted((a1, a2) -> {
-                    boolean des = decending;
+                            boolean des = decending;
                             switch (sortedBy) {
                                 case 1 -> {
-                                    if(des){
+                                    if (des) {
                                         return Long.compare(a2.getUnitPrice(), a1.getUnitPrice());
                                     }
-                                     return Long.compare(a1.getUnitPrice(), a2.getUnitPrice());
+                                    return Long.compare(a1.getUnitPrice(), a2.getUnitPrice());
                                 }
 
                                 case 2 -> {
-                                    if(des) {
+                                    if (des) {
                                         return Long.compare(a2.getUnitPrice() * this.inventory.get(a2.getId()), a1.getUnitPrice() * this.inventory.get(a1.getId()));
 
                                     }
                                     return Long.compare(a1.getUnitPrice() * this.inventory.get(a1.getId()), a2.getUnitPrice() * this.inventory.get(a2.getId()));
                                 }
                                 case 3 -> {
-                                    if(des) {
+                                    if (des) {
                                         return Long.compare(this.inventory.get(a2.getId()), this.inventory.get(a1.getId()));
 
                                     }
                                     return Long.compare(this.inventory.get(a1.getId()), this.inventory.get(a2.getId()));
                                 }
                                 case 4 -> {
-                                    if(des) {
+                                    if (des) {
                                         return CharSequence.compare(a2.getDescription(), a1.getDescription());
 
                                     }
                                     return CharSequence.compare(a1.getDescription(), a2.getDescription());
                                 }
                                 case 5 -> {
-                                    if(des) {
+                                    if (des) {
                                         return CharSequence.compare(a2.getId(), a1.getId());
 
                                     }
@@ -127,7 +126,8 @@ public class InventoryManagerImpl implements InventoryManager {
                         }
 
                 )
-        .map(a -> {
+                .limit(limit != null && limit.length > 0 && limit[0] > 0 ? limit[0] : aRep.count())
+                .map(a -> {
                     long unitsInStock = this.inventory.get(a.getId());
                     long value = a.getUnitPrice() * unitsInStock;
                     tfmt.hdr("||",
