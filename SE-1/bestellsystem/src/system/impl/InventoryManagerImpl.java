@@ -91,21 +91,9 @@ public class InventoryManagerImpl implements InventoryManager {
         return tfmt.getFormatter().getBuffer();
     }
 
-    public Article save(Article article) {
-        if( article == null )
-            throw new IllegalArgumentException( "illegal article: null" );
-        //
-        String id = article.getId();
-        if( id == null )
-            throw new IllegalArgumentException( "illegal article.id: null" );
-        //
-        aRep.save( article );	// save, make sure to avoid duplicates
-        //
-        if( ! inventory.containsKey( id ) ) {
-            this.inventory.put( id, Integer.valueOf( 0 ) );
-        }
-        return article;
-    }
+//    public Article save(Article article) {
+//
+//    }
 
     private static InventoryManager inventoryManagerInstance = null;
 
@@ -138,6 +126,19 @@ public class InventoryManagerImpl implements InventoryManager {
 
     @Override
     public Object save(Object entity) {
-        return null;
+        Article article = (Article) entity;
+        if( article == null )
+            throw new IllegalArgumentException( "illegal article: null" );
+        //
+        String id = article.getId();
+        if( id == null )
+            throw new IllegalArgumentException( "illegal article.id: null" );
+        //
+        aRep.save( article );	// save, make sure to avoid duplicates
+        //
+        if( ! inventory.containsKey( id ) ) {
+            this.inventory.put( id, Integer.valueOf( 0 ) );
+        }
+        return article;
     }
 }
