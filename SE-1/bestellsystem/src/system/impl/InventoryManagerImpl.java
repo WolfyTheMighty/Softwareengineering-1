@@ -27,12 +27,12 @@ public class InventoryManagerImpl implements InventoryManager {
 
     @Override
     public int getUnitsInStock(String id) {
-        return 0;
+        return inventory.get(id);
     }
 
     @Override
     public void update(String id, int updatedUnitsInStock) {
-
+            inventory.put( id,updatedUnitsInStock);
     }
 
     @Override
@@ -48,44 +48,43 @@ public class InventoryManagerImpl implements InventoryManager {
     @Override
     public StringBuffer printInventory() {
         return printInventory(
-                StreamSupport.stream( aRep.findAll().spliterator(), false )
+                StreamSupport.stream(aRep.findAll().spliterator(), false)
         );
     }
 
-//    @Override
-    private StringBuffer printInventory( Stream<Article> articleStream ) {
+    //    @Override
+    private StringBuffer printInventory(Stream<Article> articleStream) {
 //    public StringBuffer printInventory(int sortedBy, boolean decending, Integer... limit) {
         //
         Formatter formatter = new FormatterImpl();
-        Formatter.TableFormatter tfmt = new TableFormatterImpl( formatter, new Object[][] {
+        Formatter.TableFormatter tfmt = new TableFormatterImpl(formatter, new Object[][]{
                 // five column table with column specs: width and alignment ('[' left, ']' right)
-                { 12, '[' }, { 32, '[' }, { 12, ']' }, { 10, ']' }, { 14, ']' }
+                {12, '['}, {32, '['}, {12, ']'}, {10, ']'}, {14, ']'}
         })
-                .liner( "+-+-+-+-+-+" )		// print table header
-                .hdr( "||", "Inv.-Id", "Article / Unit", "Unit", "Units", "Value" )
-                .hdr( "||", "", "", "Price", "in-Stock", "(in €)" )
-                .liner( "+-+-+-+-+-+" )
-                ;
+                .liner("+-+-+-+-+-+")        // print table header
+                .hdr("||", "Inv.-Id", "Article / Unit", "Unit", "Units", "Value")
+                .hdr("||", "", "", "Price", "in-Stock", "(in €)")
+                .liner("+-+-+-+-+-+");
         //
         long totalValue = articleStream
-                .map( a -> {
-                    long unitsInStock = this.inventory.get( a.getId() ).intValue();
+                .map(a -> {
+                    long unitsInStock = this.inventory.get(a.getId());
                     long value = a.getUnitPrice() * unitsInStock;
-                    tfmt.hdr( "||",
+                    tfmt.hdr("||",
                             a.getId(),
                             a.getDescription(),
-                            formatter.fmtPrice( a.getUnitPrice(), a.getCurrency()).toString(),
-                            Long.toString( unitsInStock ),
-                            formatter.fmtPrice( value, a.getCurrency() ).toString()
+                            formatter.fmtPrice(a.getUnitPrice(), a.getCurrency()).toString(),
+                            Long.toString(unitsInStock),
+                            formatter.fmtPrice(value, a.getCurrency()).toString()
                     );
                     return value;
                 })
-                .reduce( 0L, (a, b) -> a + b );
+                .reduce(0L, (a, b) -> a + b);
         //
-        String inventoryValue = formatter.fmtPrice( totalValue, Currency.EUR ).toString();
+        String inventoryValue = formatter.fmtPrice(totalValue, Currency.EUR).toString();
         tfmt
-                .liner( "+-+-+-+-+-+" )
-                .hdr( "", "", "Invent", "ory Value:", inventoryValue )
+                .liner("+-+-+-+-+-+")
+                .hdr("", "", "Invent", "ory Value:", inventoryValue)
         ;
         //
         return tfmt.getFormatter().getBuffer();
@@ -116,28 +115,28 @@ public class InventoryManagerImpl implements InventoryManager {
 
     @Override
     public Iterable findAll() {
-        return null;
+        return aRep.findAll();
     }
 
     @Override
     public long count() {
-        return 0;
+        return aRep.count();
     }
 
     @Override
     public Object save(Object entity) {
         Article article = (Article) entity;
-        if( article == null )
-            throw new IllegalArgumentException( "illegal article: null" );
+        if (article == null)
+            throw new IllegalArgumentException("illegal article: null");
         //
         String id = article.getId();
-        if( id == null )
-            throw new IllegalArgumentException( "illegal article.id: null" );
+        if (id == null)
+            throw new IllegalArgumentException("illegal article.id: null");
         //
-        aRep.save( article );	// save, make sure to avoid duplicates
+        aRep.save(article);    // save, make sure to avoid duplicates
         //
-        if( ! inventory.containsKey( id ) ) {
-            this.inventory.put( id, Integer.valueOf( 0 ) );
+        if (!inventory.containsKey(id)) {
+            this.inventory.put(id, Integer.valueOf(0));
         }
         return article;
     }
