@@ -127,15 +127,6 @@ public class InventoryManagerImpl implements InventoryManager {
                         }
 
                 )
-//                .sorted(() -> {
-//                    decending ? Collections.reverseOrder(): 0;
-//                })
-
-//        if (decending) {
-//           articleStream = articleStream.sorted(Collections.reverseOrder());
-//        }
-//
-//        long totalValue = articleStream
         .map(a -> {
                     long unitsInStock = this.inventory.get(a.getId());
                     long value = a.getUnitPrice() * unitsInStock;
