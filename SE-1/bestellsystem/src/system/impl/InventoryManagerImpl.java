@@ -3,6 +3,7 @@ package system.impl;
 import datamodel.Article;
 import datamodel.Currency;
 import datamodel.Order;
+import datamodel.OrderItem;
 import system.DataRepository;
 import system.Formatter;
 import system.InventoryManager;
@@ -32,17 +33,31 @@ public class InventoryManagerImpl implements InventoryManager {
 
     @Override
     public void update(String id, int updatedUnitsInStock) {
-            inventory.put( id,updatedUnitsInStock);
+        inventory.put(id, updatedUnitsInStock);
     }
 
     @Override
-    public boolean isFillable(Order order) {
-        return false;
+    public boolean isFillable(Order order) throws IllegalArgumentException {
+        if (order == null) throw new IllegalArgumentException();
+        for (OrderItem oi: order.getItemsAsArray()) {
+                if (oi.getUnitsOrdered() > inventory.get(oi.getArticle().getId())){
+                    return false;
+                }
+        }
+        return true;
     }
 
     @Override
     public boolean fill(Order order) {
-        return false;
+        if(isFillable(order)){
+            for (OrderItem oi: order.getItemsAsArray()) {
+                inventory.put(oi.getArticle().getId(), inventory.get(oi.getArticle().getId()) - oi.getUnitsOrdered());
+            }
+        }
+        else{
+            return false;
+        }
+        return true;
     }
 
     @Override
