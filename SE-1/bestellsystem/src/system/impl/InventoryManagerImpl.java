@@ -1,13 +1,16 @@
 package system.impl;
 
 import datamodel.Article;
+import datamodel.Currency;
 import datamodel.Order;
 import system.DataRepository;
+import system.Formatter;
 import system.InventoryManager;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.StreamSupport;
 
 public class InventoryManagerImpl implements InventoryManager {
 
@@ -43,16 +46,63 @@ public class InventoryManagerImpl implements InventoryManager {
 
     @Override
     public StringBuffer printInventory() {
-        return null;
+        return printInventory(
+                StreamSupport.stream( articleRepository.findAll().spliterator(), false )
+        );
     }
 
     @Override
     public StringBuffer printInventory(int sortedBy, boolean decending, Integer... limit) {
-        return null;
+        //
+        Formatter formatter = new FormatterImpl();
+        Formatter.TableFormatter tfmt = new TableFormatterImpl( formatter, new Object[][] {
+                // five column table with column specs: width and alignment ('[' left, ']' right)
+                { 12, '[' }, { 32, '[' }, { 12, ']' }, { 10, ']' }, { 14, ']' }
+        })
+                .liner( "+-+-+-+-+-+" )		// print table header
+                .hdr( "||", "Inv.-Id", "Article / Unit", "Unit", "Units", "Value" )
+                .hdr( "||", "", "", "Price", "in-Stock", "(in €)" )
+                .liner( "+-+-+-+-+-+" )
+                ;
+        //
+        long totalValue = articleStream
+                .map( a -> {
+                    long unitsInStock = this.inventory.get( a.getId() ).intValue();
+                    long value = a.getUnitPrice() * unitsInStock;
+                    tfmt.hdr( "||",
+                            a.getId(),
+                            a.getDescription(),
+                            formatter.fmtPrice( a.getUnitPrice(), a.getCurrency()).toString(),
+                            Long.toString( unitsInStock ),
+                            formatter.fmtPrice( value, a.getCurrency() ).toString()
+                    );
+                    return value;
+                })
+                .reduce( 0L, (a, b) -> a + b );
+        //
+        String inventoryValue = formatter.fmtPrice( totalValue, Currency.EUR ).toString();
+        tfmt
+                .liner( "+-+-+-+-+-+" )
+                .hdr( "", "", "Invent", "ory Value:", inventoryValue )
+        ;
+        //
+        return tfmt.getFormatter().getBuffer();
     }
 
     public void save(Article article) {
-        inventory.put(article.getId(), 0);
+        if( article == null )
+            throw new IllegalArgumentException( "illegal article: null" );
+        //
+        String id = article.getId();
+        if( id == null )
+            throw new IllegalArgumentException( "illegal article.id: null" );
+        //
+        articleRepository.save( article );	// save, make sure to avoid duplicates
+        //
+        if( ! inventory.containsKey( id ) ) {
+            this.inventory.put( id, Integer.valueOf( 0 ) );
+        }
+        return article;
     }
 
     private static InventoryManager inventoryManagerInstance = null;
