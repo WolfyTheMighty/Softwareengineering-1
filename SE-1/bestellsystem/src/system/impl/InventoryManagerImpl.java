@@ -59,7 +59,7 @@ public class InventoryManagerImpl implements InventoryManager {
 
     @Override
     public StringBuffer printInventory() {
-//        return printInventory(
+//        return printInventory(a
 //                StreamSupport.stream(aRep.findAll().spliterator(), false)
 //        );
         return printInventory(3, true);
