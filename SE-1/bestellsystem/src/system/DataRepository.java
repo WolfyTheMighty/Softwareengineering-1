@@ -26,13 +26,13 @@ public interface DataRepository {
 		 * @param id id to be searched for
 		 * @return Optional object with given id or empty optional
 		 */
-		Optional<T> findById( long id );
+		Optional findById( long id );
 		/**
 		 * finds Object with given long id
 		 * @param id id to be searched for
 		 * @return Optional object with given id or empty optional
 		 */
-		Optional<T> findById( String id );
+		Optional findById( String id );
 
 		/**
 		 * Gives a list with all objets in the repository
