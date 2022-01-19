@@ -9,7 +9,7 @@ import java.util.*;
  * @version {@value package_info#Version}
  * @since 0.1.0
  */
-public class Article {
+public class Article implements Comparable<Article>{
 
 
     /**
@@ -159,4 +159,8 @@ public class Article {
     }
 
 
+    @Override
+    public int compareTo(Article a) {
+        return description.compareTo(a.getDescription());
+    }
 }

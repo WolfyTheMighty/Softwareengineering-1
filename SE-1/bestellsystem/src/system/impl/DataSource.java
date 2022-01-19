@@ -1,11 +1,12 @@
 package system.impl;
 
 import system.DataRepository;
-
+import system.DataRepository;
+import system.InventoryManager;
 
 
 /**
- * Public interface of a data provider that reads or writes data from/to a data source.
+ * Local interface of a data provider that reads or writes data from/to a data source.
  *
  */
 
@@ -23,11 +24,11 @@ interface DataSource {
 	 * @return number of objects imported
 	 */
 
-	long importCustomerJSON(String jsonFileName, DataRepository.Repository collector, Integer... limit );
-	
-	long importArticleJSON(String jsonFileName, DataRepository.Repository collector, Integer... limit );
+	long importCustomerJSON( String jsonFileName, DataRepository.Repository collector, Integer... limit );
 
-	long importOrderJSON(String jsonFileName, DataRepository.Repository collector, Integer... limit );
+	long importArticleJSON( String jsonFileName, InventoryManager inventoryManager, Integer... limit );
+
+//	long importOrderJSON( String jsonFileName, DataRepository.Repository collector, Integer... limit );
 
 
 //	<T, ID> void importJSON( String jsonFileName, DataRepository.Repository<T, ID> collector, Integer... limit );

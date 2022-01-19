@@ -6,7 +6,6 @@ import datamodel.Order;
 import system.DataRepository;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Optional;
 
 class DataRepositoryImpl {
@@ -15,7 +14,7 @@ class DataRepositoryImpl {
         private ArrayList<T> container = new ArrayList<>();
 
         @Override
-        public Optional<T> findById(long id) {
+        public Optional findById(long id) {
             for (T entity : container) {
                 Customer c = (Customer) entity;
                 if (c.getId() == id) return Optional.of(entity);
@@ -24,8 +23,24 @@ class DataRepositoryImpl {
             return Optional.empty();
         }
 
+        public Optional findByID(long id) {
+            for (T entity : container) {
+                Customer c = (Customer) entity;
+                if (c.getId() == id) return Optional.of(entity);
+            }
+
+            return Optional.empty();
+        }
+        public Optional findByID(String  id) {
+            for (T entity : container) {
+                Article a = (Article) entity;
+                if (a.getId().equals(id)) return Optional.of(entity);
+            }
+            return Optional.empty();
+
+        }
         @Override
-        public Optional<T> findById(String id) {
+        public Optional findById(String id) {
 
             for (T entity : container) {
                    Article a = (Article) entity;
@@ -49,15 +64,16 @@ class DataRepositoryImpl {
             container.add(entity);
             return entity;
         }
+
     }
 
     private static DataRepository.Repository<Article> articleRepositoryInstance = null;
-    public DataRepository.Repository<Article> getArticleRepository() {
+    public RepositoryImpl getArticleRepository() {
 
         if(articleRepositoryInstance == null){
             articleRepositoryInstance = new RepositoryImpl<Article>();
         }
-        return articleRepositoryInstance;
+        return (RepositoryImpl) articleRepositoryInstance;
     }
 
     private static DataRepository.Repository<Order> orderRepositoryInstance = null;
