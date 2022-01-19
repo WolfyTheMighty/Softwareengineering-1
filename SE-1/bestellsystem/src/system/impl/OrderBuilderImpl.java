@@ -27,9 +27,10 @@ import system.RTE.Runtime;
      */
     private final DataRepository.Repository customerRepository;
     //
-    private final DataRepository.Repository articleRepository;
+//    private final DataRepository.Repository articleRepository;
     //
     private final DataRepository.Repository orderRepository;
+    private final InventoryManager inventoryManager;
 
 
     /**
@@ -54,8 +55,9 @@ import system.RTE.Runtime;
      */
     OrderBuilderImpl(Runtime runtime) {
         this.customerRepository = runtime.getCustomerRepository();
-        this.articleRepository = runtime.getArticleRepository();
+//        this.articleRepository = runtime.getArticleRepository();
         this.orderRepository = runtime.getOrderRepository();
+        this.inventoryManager = runtime.getInventoryManager();
     }
 
 
@@ -67,7 +69,7 @@ import system.RTE.Runtime;
      */
     @Override
     public boolean accept(Order order) {
-        InventoryManager inventoryManager = new InventoryManagaerMOCK();
+
         boolean validOrder = inventoryManager.isFillable(order);
         if (validOrder) {
             orderRepository.save(order);
@@ -100,7 +102,8 @@ import system.RTE.Runtime;
         Customer brigitte = (Customer) crep.findById(660380).get();
         Customer joel = (Customer) crep.findById(582596).get();
 
-        DataRepository.Repository arep = articleRepository;
+//        DataRepository.Repository arep = articleRepository;
+        InventoryManager arep = inventoryManager;
         /*
          * Look up articles from ArticleRepository.
          */
